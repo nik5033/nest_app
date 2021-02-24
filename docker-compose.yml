@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    container_name: postgres
+    build: ./docker/postgres
+    image: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./docker-data/postgres/data:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data/
+
+  nodejs:
+    container_name: nodejs
+    build: ./docker/node
+    image: nodejs
+    volumes:
+      - .:/app
+    ports:
+      - 8090:${PORT}
+      - 5555:5555
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    command: yarn prod
+
+networks:
+  default:
+    external:
+      name: sample
