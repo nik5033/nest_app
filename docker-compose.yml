@@ -18,17 +18,16 @@ services:
   nodejs:
     container_name: nodejs
     build: ./docker/node
-    image: nodejs
+    image: node:latest
     volumes:
       - .:/app
     ports:
-      - 8090:${PORT}
       - 5555:5555
     env_file:
       - .env
     depends_on:
       - postgres
-    command: yarn prod
+    command: yarn dev
 
 networks:
   default:
