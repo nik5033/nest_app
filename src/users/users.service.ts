@@ -31,9 +31,20 @@ export class UsersService {
   async deleteUser(user_id: number) {
     try {
       const user = await this.usersRepository.findOne(user_id);
+      if (user == null) {
+          throw new HttpException({
+            statusCode: HttpStatus.BAD_REQUEST,
+          }, HttpStatus.BAD_REQUEST)
+      }
       await this.usersRepository.remove(user);
     }
     catch (e) {
+      if (e instanceof HttpException) {
+        throw new HttpException({
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: e.toString(),
+        }, HttpStatus.BAD_REQUEST)
+      }
       throw new HttpException({
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: e.toString(),

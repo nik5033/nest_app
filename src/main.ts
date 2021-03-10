@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Nigger')
-    .setDescription('Black lives matter')
+    .setTitle('Nest-app')
+    .setDescription('Routes')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

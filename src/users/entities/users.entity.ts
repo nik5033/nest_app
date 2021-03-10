@@ -8,7 +8,9 @@ export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-  })
+  @Column()
   name: string;
+
+  @Column()
+  password: string;
 }
