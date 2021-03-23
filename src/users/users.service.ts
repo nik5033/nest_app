@@ -55,7 +55,7 @@ export class UsersService {
   async updateUser(updateUserDto: UpdateUserDto, id: number) {
     try {
       const user = await this.usersRepository.findOne(id);
-      user.name = updateUserDto.name;
+      user.username = updateUserDto.username;
       await this.usersRepository.save(user);
     }
     catch (e) {

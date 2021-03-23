@@ -4,6 +4,6 @@ import { IsNotEmpty } from "class-validator";
 export class UpdateUserDto {
   @ApiProperty()
   @IsNotEmpty()
-  name: string;
+  username: string;
   //password: string;
 }
