@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { HealthService } from "./health.service";
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller('health')

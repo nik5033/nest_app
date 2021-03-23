@@ -29,7 +29,7 @@ export class AuthService {
     const user = await this.usersRepository.create(loginUserDto);
     const payload = { username: user.username, password: user.password};
     return {
-      access_token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload),
     };
   }
 }
