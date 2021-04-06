@@ -13,7 +13,7 @@ export class UsersService {
   ) {}
 
   async findAll(): Promise<Users[]> {
-    return this.usersRepository.find();
+    return await this.usersRepository.find();
   }
 
   async createUser(createUserDto: CreateUserDto) {
@@ -36,13 +36,15 @@ export class UsersService {
     try {
       const user = await this.usersRepository.findOne(user_id);
       if (user == null) {
-          throw new HttpException({
+        throw new HttpException(
+          {
             statusCode: HttpStatus.BAD_REQUEST,
-          }, HttpStatus.BAD_REQUEST)
+          },
+          HttpStatus.BAD_REQUEST,
+        );
       }
       await this.usersRepository.remove(user);
-    }
-    catch (e) {
+    } catch (e) {
       if (e instanceof HttpException) {
         throw new HttpException({
             statusCode: HttpStatus.BAD_REQUEST,
