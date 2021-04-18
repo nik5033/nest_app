@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from "@nestjs/typeorm";
@@ -17,6 +17,9 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersRepository.findOne({ username: username });
+    if (!user) {
+      throw new BadRequestException({message: "User does not exist"});
+    }
     const check_pass = await compare(pass, user.password);
     if (user && check_pass) {
       const { password, ...result } = user;
@@ -27,7 +30,12 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     const user = await this.usersRepository.create(loginUserDto);
-    const payload = { username: user.username, password: user.password};
+    const usr = await this.usersRepository.findOne({username: user.username})
+    const payload = {
+      role: usr.role,
+      username: user.username,
+      password: user.password,
+    };
     return {
       token: this.jwtService.sign(payload),
     };

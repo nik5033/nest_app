@@ -12,6 +12,10 @@ export class UsersService {
     @InjectRepository(Users) private readonly usersRepository: Repository<Users>,
   ) {}
 
+  async findOne(id: number): Promise<Users> {
+    return await this.usersRepository.findOne(id);
+  }
+
   async findAll(): Promise<Users[]> {
     return await this.usersRepository.find();
   }

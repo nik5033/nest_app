@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from "@nestjs/common";
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from "@nestjs/jwt";
 import { JwtStrategy } from "./strategy/jwt.strategy";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Users } from "../users/entities/users.entity";
@@ -11,8 +11,8 @@ import { LocalStrategy } from "./strategy/local.strategy";
 
 @Module({
   imports: [
+    forwardRef(() => UsersModule),
     TypeOrmModule.forFeature([Users]),
-    UsersModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.secret,
@@ -20,7 +20,7 @@ import { LocalStrategy } from "./strategy/local.strategy";
     }),
   ],
   providers: [AuthService, JwtStrategy, LocalStrategy],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
   controllers: [AuthController],
 })
 export class AuthModule {}
