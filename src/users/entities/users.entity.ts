@@ -1,16 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export enum Roles {
-    ADMIN = 'admin',
-    EDITOR = 'editor',
-    USER = 'user'
+export enum roles {
+  ADMIN = 'admin',
+  EDITOR = 'editor',
+  USER = 'user',
 }
 
 @Entity({
   name: 'users',
 })
 export class Users {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,6 +19,6 @@ export class Users {
   @Column()
   password: string;
 
-  @Column({ enum: Roles, default: Roles.USER })
-  role: Roles;
+  @Column({ enum: roles, default: roles.USER })
+  role: roles;
 }
