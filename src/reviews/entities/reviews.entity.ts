@@ -1,9 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Users } from "../../users/entities/users.entity";
 import { Teachers } from "../../teachers/entities/teachers.entity";
 
 @Entity({
-  name: 'teachers',
+  name: 'reviews',
 })
 export class Reviews {
   @PrimaryGeneratedColumn()
@@ -14,6 +14,15 @@ export class Reviews {
 
   @Column()
   neg_rate: number;
+
+  @Column({ length: 400, type: 'varchar' })
+  text: string;
+
+  @CreateDateColumn()
+  createdDate: Date;
+
+  @UpdateDateColumn()
+  updatedDate: Date;
 
   @ManyToOne(() => Users, (user) => user.reviews)
   user: Users;

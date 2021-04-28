@@ -14,6 +14,5 @@ import { ReviewsModule } from './reviews/reviews.module';
     TeachersModule,
     ReviewsModule
   ],
-  controllers: [ReviewsController],
 })
 export class AppModule {}

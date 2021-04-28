@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Users } from './entities/users.entity';
-import { Repository } from 'typeorm';
+import { Users } from "./entities/users.entity";
+import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { genSalt, hash } from "bcrypt";
@@ -23,8 +23,7 @@ export class UsersService {
   async createUser(createUserDto: CreateUserDto) {
     try {
       const salt = await genSalt();
-      const hashpass = await hash(createUserDto.password, salt);
-      createUserDto.password = hashpass;
+      createUserDto.password = await hash(createUserDto.password, salt);
       const user = await this.usersRepository.create(createUserDto);
       await this.usersRepository.save(user);
     }
@@ -32,7 +31,9 @@ export class UsersService {
       throw new HttpException({
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: e.toString(),
-      }, HttpStatus.INTERNAL_SERVER_ERROR);
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -40,21 +41,10 @@ export class UsersService {
     try {
       const user = await this.usersRepository.findOne(user_id);
       if (user == null) {
-        throw new HttpException(
-          {
-            statusCode: HttpStatus.BAD_REQUEST,
-          },
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException({message: 'user does not exist'});
       }
       await this.usersRepository.remove(user);
     } catch (e) {
-      if (e instanceof HttpException) {
-        throw new HttpException({
-            statusCode: HttpStatus.BAD_REQUEST,
-            message: e.toString(),
-        }, HttpStatus.BAD_REQUEST)
-      }
       throw new HttpException({
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: e.toString(),

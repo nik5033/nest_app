@@ -30,11 +30,11 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     const user = await this.usersRepository.create(loginUserDto);
-    const usr = await this.usersRepository.findOne({username: user.username})
+    const usr = await this.usersRepository.findOne({ username: user.username });
     const payload = {
       role: usr.role,
       username: user.username,
-      password: user.password,
+      id: usr.id,
     };
     return {
       token: this.jwtService.sign(payload),

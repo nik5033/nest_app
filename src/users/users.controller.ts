@@ -7,6 +7,7 @@ import { Roles } from "../auth/decorators/roles.decorator";
 import { RolesGuard } from "../auth/guard/roles-auth.guard";
 import { ApiProperty, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { roles } from "./entities/users.entity";
+import { AuthUser } from "./decorator/users.decorator";
 
 @ApiTags("Users")
 @Controller('users')
@@ -50,8 +51,19 @@ export class UsersController {
   })
   @Roles(roles.ADMIN, roles.USER)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Delete('rm')
+  async delUser(@AuthUser() user: any) {
+    await this.usersService.deleteUser(user.id);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Delete user by id(for admin)',
+  })
+  @Roles(roles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete('rm/:id')
-  async delUser(@Param('id') id: number) {
+  async delUserAdmin(@Param('id') id: number) {
     await this.usersService.deleteUser(id);
   }
 
