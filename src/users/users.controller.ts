@@ -8,6 +8,7 @@ import { RolesGuard } from "../auth/guard/roles-auth.guard";
 import { ApiBearerAuth, ApiHeader, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { roles } from "./entities/users.entity";
 import { AuthUser } from "./decorator/users.decorator";
+import { UpdateUserRoleDto } from "./dto/update-user-role.dto";
 
 @ApiTags("Users")
 @Controller('users')
@@ -81,5 +82,18 @@ export class UsersController {
   @Patch('chg/:id')
   async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     await this.usersService.updateUser(updateUserDto, id);
+  }
+
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Update user role by id',
+  })
+  @Roles(roles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UsePipes(new ValidationPipe())
+  @Patch('chg')
+  async updateUserRole(@Body() updateUserRoleDto: UpdateUserRoleDto) {
+    await this.usersService.updateUserRole(updateUserRoleDto);
   }
 }

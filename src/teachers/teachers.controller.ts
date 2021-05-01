@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes,
 import { TeachersService } from "./teachers.service";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { RolesGuard } from "../auth/guard/roles-auth.guard";
@@ -32,6 +32,7 @@ export class TeachersController {
     return this.teachersService.get_by_first_letter(str);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'Create teacher',
@@ -44,6 +45,7 @@ export class TeachersController {
     await this.teachersService.createTeacher(createTeacherDto);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Delete teacher by id',
@@ -55,6 +57,7 @@ export class TeachersController {
     await this.teachersService.deleteTeacher(id);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Update teacher by id',

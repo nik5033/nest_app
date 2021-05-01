@@ -24,8 +24,10 @@ export class ReviewsService {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async findAllreviews(): Promise<Reviews[]> {
-    return await this.reviewsRepository.find();
+  async findReviewsById(teacher_id: number): Promise<Reviews[]> {
+    return await this.reviewsRepository.find(
+      { where: [{teacher: await this.teachersRepository.findOne(teacher_id)}] },
+      );
   }
 
   async createReview(createReviewDto: CreateReviewDto, user_id: number) {
@@ -37,6 +39,8 @@ export class ReviewsService {
     if (user == null) {
       throw new BadRequestException({message: "User does not exist"});
     }
+    const neg_rate = createReviewDto.neg_rate;
+    console.log(neg_rate);
     const review = await this.reviewsRepository.create({
       pos_rate: createReviewDto.pos_rate,
       neg_rate: createReviewDto.neg_rate,
@@ -45,6 +49,8 @@ export class ReviewsService {
       user: user,
     });
     review.teacher = teacher;
+
+    await this.reviewsRepository.save(review);
   }
 
   async deleteReview(review_id: number, user_id: number) {

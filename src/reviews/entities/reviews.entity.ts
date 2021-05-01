@@ -9,10 +9,16 @@ export class Reviews {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    type: "float"
+  })
   pos_rate: number;
 
-  @Column()
+  @Column(
+    {
+      type: "float"
+    }
+  )
   neg_rate: number;
 
   @Column({ length: 400, type: 'varchar' })

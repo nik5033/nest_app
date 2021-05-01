@@ -9,7 +9,7 @@ import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { RolesGuard } from "../auth/guard/roles-auth.guard";
 import { UpdateReviewDto } from "./dto/update-review.dto";
 
-@ApiTags("Review")
+@ApiTags('Review')
 @Controller('review')
   export class ReviewsController {
   constructor(private readonly reviewService: ReviewsService,
@@ -29,11 +29,11 @@ import { UpdateReviewDto } from "./dto/update-review.dto";
 
   @ApiResponse({
     status: 200,
-    description: 'Get all reviews',
+    description: 'Get reviews by teacher_id',
   })
-  @Get()
-  async getAllReviews() {
-    return this.reviewService.findAllreviews();
+  @Get(':id')
+  async getAllReviews(@Param('id') teacher_id: number) {
+    return this.reviewService.findReviewsById(teacher_id);
   }
 
   @ApiBearerAuth()

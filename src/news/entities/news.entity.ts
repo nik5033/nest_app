@@ -17,7 +17,4 @@ export class News {
 
   @CreateDateColumn()
   createdDate: Date;
-
-  @Column()
-  date: Date;
 }
