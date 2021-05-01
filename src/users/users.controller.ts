@@ -5,7 +5,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { RolesGuard } from "../auth/guard/roles-auth.guard";
-import { ApiProperty, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiHeader, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { roles } from "./entities/users.entity";
 import { AuthUser } from "./decorator/users.decorator";
 
@@ -24,6 +24,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Get user by id',
@@ -45,6 +46,7 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Delete user by id',
@@ -56,6 +58,7 @@ export class UsersController {
     await this.usersService.deleteUser(user.id);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Delete user by id(for admin)',
@@ -67,6 +70,7 @@ export class UsersController {
     await this.usersService.deleteUser(id);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Update user by id',

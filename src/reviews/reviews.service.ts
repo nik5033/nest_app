@@ -20,7 +20,7 @@ export class ReviewsService {
     private readonly reviewsRepository: Repository<Reviews>,
     @InjectRepository(Teachers)
     private readonly teachersRepository: Repository<Teachers>,
-    @InjectRepository(Teachers)
+    @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
   ) {}
 

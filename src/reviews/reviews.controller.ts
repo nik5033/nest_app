@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiHeader, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ReviewsService } from "./reviews.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { AuthUser } from "../users/decorator/users.decorator";
@@ -15,6 +15,7 @@ import { UpdateReviewDto } from "./dto/update-review.dto";
   constructor(private readonly reviewService: ReviewsService,
   ) {}
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'Create review',
@@ -35,17 +36,18 @@ import { UpdateReviewDto } from "./dto/update-review.dto";
     return this.reviewService.findAllreviews();
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Delete review',
   })
   @Delete(':id')
-  @Roles(roles.EDITOR)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   async deleteReview(@Param('id') id: number, @AuthUser() user) {
     await this.reviewService.deleteReview(id, user.id);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Edit review',
