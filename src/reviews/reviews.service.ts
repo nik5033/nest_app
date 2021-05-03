@@ -56,7 +56,7 @@ export class ReviewsService {
       throw new BadRequestException({message: "User does not exist"});
     }
     const Role = user.role;
-    const review = await this.reviewsRepository.findOne(review_id);
+    const review = await this.reviewsRepository.findOne(review_id, {relations: ['user']});
     if (review == null) {
       throw new BadRequestException({message: "Review does not exist"});
     }
@@ -74,6 +74,7 @@ export class ReviewsService {
     const user = await this.usersRepository.findOne(user_id);
     const review = await this.reviewsRepository.findOne(
       updateReviewDto.review_id,
+      { relations: ['user'] },
     );
 
     if (review.user.id == user.id) {

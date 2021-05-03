@@ -1,15 +1,12 @@
 import { Body, Controller, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
-import { ApiBearerAuth, ApiResponse } from "@nestjs/swagger";
-import { Roles } from "../auth/decorators/roles.decorator";
-import { roles } from "../users/entities/users.entity";
+import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
-import { RolesGuard } from "../auth/guard/roles-auth.guard";
-import { CreateTeacherDto } from "../teachers/dto/create-teacher.dto";
 import { TeacherRateService } from "./teacher-rate.service";
 import { CreateTeacherRateDto } from "./dto/create-teacher-rate.dto";
 import { AuthUser } from "../users/decorator/users.decorator";
 import { UpdateTeacherRateDto } from "./dto/update-teacher-rate.dto";
 
+@ApiTags('Teacher rates')
 @Controller('teacher-rate')
 export class TeacherRateController {
   constructor(private readonly teacherRateService: TeacherRateService
@@ -44,7 +41,7 @@ export class TeacherRateController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @UsePipes(new ValidationPipe())
-  async updateRates(@Param('id') id: number, @AuthUser() user, updateTeacherRateDto: UpdateTeacherRateDto) {
+  async updateRates(@Param('id') id: number, @AuthUser() user,@Body() updateTeacherRateDto: UpdateTeacherRateDto) {
     await this.teacherRateService.changeRate(updateTeacherRateDto, user.id, id);
   }
 }

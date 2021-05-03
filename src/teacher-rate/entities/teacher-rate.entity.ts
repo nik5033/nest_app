@@ -3,7 +3,7 @@ import { Users } from "../../users/entities/users.entity";
 import { Teachers } from "../../teachers/entities/teachers.entity";
 
 @Entity({
-  name: 'teachers',
+  name: 'teacher-rate',
 })
 export class TeacherRates {
   @PrimaryGeneratedColumn()
@@ -18,7 +18,7 @@ export class TeacherRates {
   @Column('real')
   credits_exams: number;
 
-  @ManyToOne(() => Users, (user) => user.reviews)
+  @ManyToOne(() => Users, (user) => user.teacher_rates)
   user: Users;
 
   @ManyToOne(() => Teachers, (teacher) => teacher.teacher_rates)

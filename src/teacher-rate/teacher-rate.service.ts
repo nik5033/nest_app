@@ -6,7 +6,6 @@ import { Users } from '../users/entities/users.entity';
 import { TeacherRates } from './entities/teacher-rate.entity';
 import { CreateTeacherRateDto } from './dto/create-teacher-rate.dto';
 import { UpdateTeacherRateDto } from "./dto/update-teacher-rate.dto";
-import { compareSync } from "bcrypt";
 
 @Injectable()
 export class TeacherRateService {
@@ -47,7 +46,7 @@ export class TeacherRateService {
       throw new BadRequestException({ message: 'User does not exist' });
     }
 
-    const Rate = await this.teacherRateRepository.find({
+    const Rate = await this.teacherRateRepository.findOne({
       where: [
         {
           teacher: teacher,
@@ -55,7 +54,6 @@ export class TeacherRateService {
         },
       ],
     });
-
     if (Rate != null) {
       throw new BadRequestException({ message: 'Rate already exist' });
     }
@@ -81,7 +79,13 @@ export class TeacherRateService {
   }
 
   async changeRate(updateTeacherRateDto: UpdateTeacherRateDto, user_id: number, id: number) {
-    const Rate = await this.teacherRateRepository.findOne(id);
+    const Rate = await this.teacherRateRepository.findOne(
+      id,
+      {relations: ['user', 'teacher']},
+    );
+    if (Rate == null) {
+      throw new BadRequestException({ message: 'Rate does not exist' });
+    }
     if (Rate.user.id != user_id) {
       throw new ForbiddenException();
     }
@@ -92,4 +96,5 @@ export class TeacherRateService {
     await this.teachersRepository.save(Rate.teacher);
     await this.teacherRateRepository.update(id, updateTeacherRateDto);
   }
+
 }
