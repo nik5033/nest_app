@@ -1,6 +1,15 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 import { Users } from "../../users/entities/users.entity";
 import { Teachers } from "../../teachers/entities/teachers.entity";
+import { ReviewRates } from "../../review-rate/entities/review-rate.entity";
 
 @Entity({
   name: 'reviews',
@@ -35,4 +44,7 @@ export class Reviews {
 
   @ManyToOne(() => Teachers, (teacher) => teacher.reviews)
   teacher: Teachers;
+
+  @OneToMany(() => ReviewRates, (review_rate) => review_rate.review)
+  review_rates: ReviewRates[];
 }

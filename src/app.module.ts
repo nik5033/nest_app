@@ -3,12 +3,10 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { TeachersModule } from './teachers/teachers.module';
-import { ReviewsController } from './reviews/reviews.controller';
 import { ReviewsModule } from './reviews/reviews.module';
 import { NewsModule } from './news/news.module';
-import { TeacherRateController } from './teacher-rate/teacher-rate.controller';
-import { TeacherRateService } from './teacher-rate/teacher-rate.service';
 import { TeacherRateModule } from './teacher-rate/teacher-rate.module';
+import { ReviewRateModule } from './review-rate/review-rate.module';
 
 @Module({
   imports: [
@@ -18,7 +16,8 @@ import { TeacherRateModule } from './teacher-rate/teacher-rate.module';
     TeachersModule,
     ReviewsModule,
     NewsModule,
-    TeacherRateModule
+    TeacherRateModule,
+    ReviewRateModule
   ],
 })
 export class AppModule {}

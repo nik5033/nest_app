@@ -26,7 +26,7 @@ export class TeacherRateService {
 
     const Rates = await this.teacherRateRepository.find({
       where: { teacher: teacher },
-    })
+    });
 
     return Rates;
   }
@@ -58,8 +58,6 @@ export class TeacherRateService {
       throw new BadRequestException({ message: 'Rate already exist' });
     }
 
-
-
     const New_Rate = await this.teacherRateRepository.create({
       character: createTeacherRateDto.character,
       quality: createTeacherRateDto.quality,
@@ -74,7 +72,6 @@ export class TeacherRateService {
 
     await this.teachersRepository.save(teacher);
     await this.teacherRateRepository.save(New_Rate);
-
 
   }
 

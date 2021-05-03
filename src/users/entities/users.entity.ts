@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Reviews } from "../../reviews/entities/reviews.entity";
 import { TeacherRates } from "../../teacher-rate/entities/teacher-rate.entity";
+import { ReviewRates } from "../../review-rate/entities/review-rate.entity";
 
 export enum roles {
   ADMIN = 'admin',
@@ -29,4 +30,7 @@ export class Users {
 
   @OneToMany(() => TeacherRates, (teacher_rate) => teacher_rate.user)
   teacher_rates: TeacherRates[];
+
+  @OneToMany(() => ReviewRates, (review_rate) => review_rate.user)
+  review_rate: ReviewRates[];
 }
