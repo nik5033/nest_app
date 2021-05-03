@@ -85,7 +85,11 @@ export class TeacherRateService {
     if (Rate.user.id != user_id) {
       throw new ForbiddenException();
     }
+    for (const prop of Object.getOwnPropertyNames(updateTeacherRateDto)) {
+      Rate.teacher[prop] += (-Rate.teacher[prop] + updateTeacherRateDto[prop]);
+    }
 
+    await this.teachersRepository.save(Rate.teacher);
     await this.teacherRateRepository.update(id, updateTeacherRateDto);
   }
 }
