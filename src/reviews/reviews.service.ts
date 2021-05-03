@@ -1,8 +1,6 @@
 import {
   BadRequestException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -40,7 +38,6 @@ export class ReviewsService {
       throw new BadRequestException({message: "User does not exist"});
     }
     const neg_rate = createReviewDto.neg_rate;
-    console.log(neg_rate);
     const review = await this.reviewsRepository.create({
       pos_rate: createReviewDto.pos_rate,
       neg_rate: createReviewDto.neg_rate,

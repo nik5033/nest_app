@@ -9,14 +9,4 @@ export class UpdateTeacherDto {
 
   @ApiProperty()
   middlename: string;
-
-  @ApiProperty()
-  character: number;
-
-  @ApiProperty()
-  quality: number;
-
-  @ApiProperty()
-  credits_exams: number;
-
 }

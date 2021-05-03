@@ -25,13 +25,10 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Get user by id',
   })
-  @Roles(roles.ADMIN, roles.USER)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   async getUser(@Param('id') id: number) {
     return this.usersService.findOne(id);

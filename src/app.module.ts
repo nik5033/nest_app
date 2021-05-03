@@ -6,6 +6,9 @@ import { TeachersModule } from './teachers/teachers.module';
 import { ReviewsController } from './reviews/reviews.controller';
 import { ReviewsModule } from './reviews/reviews.module';
 import { NewsModule } from './news/news.module';
+import { TeacherRateController } from './teacher-rate/teacher-rate.controller';
+import { TeacherRateService } from './teacher-rate/teacher-rate.service';
+import { TeacherRateModule } from './teacher-rate/teacher-rate.module';
 
 @Module({
   imports: [
@@ -14,7 +17,8 @@ import { NewsModule } from './news/news.module';
     AuthModule,
     TeachersModule,
     ReviewsModule,
-    NewsModule
+    NewsModule,
+    TeacherRateModule
   ],
 })
 export class AppModule {}
