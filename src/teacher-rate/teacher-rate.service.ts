@@ -1,10 +1,10 @@
 import { BadRequestException, ForbiddenException, Injectable } from "@nestjs/common";
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Teachers } from '../teachers/entities/teachers.entity';
-import { Users } from '../users/entities/users.entity';
-import { TeacherRates } from './entities/teacher-rate.entity';
-import { CreateTeacherRateDto } from './dto/create-teacher-rate.dto';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Teachers } from "../teachers/entities/teachers.entity";
+import { Users } from "../users/entities/users.entity";
+import { TeacherRates } from "./entities/teacher-rate.entity";
+import { CreateTeacherRateDto } from "./dto/create-teacher-rate.dto";
 import { UpdateTeacherRateDto } from "./dto/update-teacher-rate.dto";
 
 @Injectable()
@@ -20,15 +20,13 @@ export class TeacherRateService {
 
   async getRatesByTeacher(teacher_id: number) {
     const teacher = await this.teachersRepository.findOne(teacher_id);
-    if (teacher ==null) {
+    if (teacher == null) {
       throw new BadRequestException({ message: 'Teacher does not exist' });
     }
 
-    const Rates = await this.teacherRateRepository.find({
+    return await this.teacherRateRepository.find({
       where: { teacher: teacher },
     });
-
-    return Rates;
   }
 
   async createRate(createTeacherRateDto: CreateTeacherRateDto, user_id: number) {
@@ -39,9 +37,7 @@ export class TeacherRateService {
       throw new BadRequestException({ message: 'Teacher does not exist' });
     }
 
-    const user = await this.usersRepository.findOne(
-      user_id,
-    );
+    const user = await this.usersRepository.findOne(user_id);
     if (user == null) {
       throw new BadRequestException({ message: 'User does not exist' });
     }
@@ -77,8 +73,7 @@ export class TeacherRateService {
 
   async changeRate(updateTeacherRateDto: UpdateTeacherRateDto, user_id: number, id: number) {
     const Rate = await this.teacherRateRepository.findOne(
-      id,
-      {relations: ['user', 'teacher']},
+      id, {relations: ['user', 'teacher']},
     );
     if (Rate == null) {
       throw new BadRequestException({ message: 'Rate does not exist' });
@@ -87,11 +82,10 @@ export class TeacherRateService {
       throw new ForbiddenException();
     }
     for (const prop of Object.getOwnPropertyNames(updateTeacherRateDto)) {
-      Rate.teacher[prop] += (-Rate.teacher[prop] + updateTeacherRateDto[prop]);
+      Rate.teacher[prop] += -Rate.teacher[prop] + updateTeacherRateDto[prop];
     }
 
     await this.teachersRepository.save(Rate.teacher);
     await this.teacherRateRepository.update(id, updateTeacherRateDto);
   }
-
 }

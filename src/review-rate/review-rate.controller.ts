@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ReviewRateService } from "./review-rate.service";
-import { ApiBearerAuth, ApiResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { AuthUser } from "../users/decorator/users.decorator";
 import { CreateReviewRateDto } from "./dto/create-review-rate.dto";
-import { UpdateTeacherRateDto } from "../teacher-rate/dto/update-teacher-rate.dto";
 import { UpdateReviewRateDto } from "./dto/update-review-rate.dto";
 
+@ApiTags('Review rates')
 @Controller('review-rate')
 export class ReviewRateController {
   constructor(private readonly reviewRateService: ReviewRateService

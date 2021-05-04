@@ -18,17 +18,26 @@ export class ReviewRateService {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async getRatesByReview(review_id: number) {
+  async getRatesByReview(review_id: number): Promise<ReviewRates[]> {
     const review = await this.reviewsRepository.findOne(review_id);
     if (review == null) {
       throw new BadRequestException({ message: 'Review does not exist' });
     }
 
     const Rates = await this.reviewRatesRepository.find({
+      relations: ['user'],
       where: { review: review },
     });
 
-    return Rates;
+    const result_rates = [];
+
+    for (const rate of Rates) {
+      const { user, ...result_rate } = rate;
+      const { password, ...result_user } = user;
+      result_rate['user'] = result_user;
+      result_rates.push(result_rate);
+    }
+    return result_rates;
   }
 
   async createRate(createReviewRateDto: CreateReviewRateDto, user_id: number) {
@@ -63,10 +72,10 @@ export class ReviewRateService {
     });
 
     if (createReviewRateDto.rate == Rate.positive) {
-      review.neg_rate += 1;
+      review.pos_rate += 1;
     }
     else if (createReviewRateDto.rate == Rate.negative) {
-      review.pos_rate += 1;
+      review.neg_rate += 1;
     }
     else {
       throw new BadRequestException({ message: 'Wrong rate' });
@@ -95,6 +104,8 @@ export class ReviewRateService {
           review_rate.review.neg_rate -= 1;
           review_rate.review.pos_rate += 1;
         }
+
+        await this.reviewRatesRepository.update(id, updateReviewRateDto);
         break;
       }
       case Rate.negative: {
@@ -102,6 +113,8 @@ export class ReviewRateService {
           review_rate.review.pos_rate -= 1;
           review_rate.review.neg_rate += 1;
         }
+
+        await this.reviewRatesRepository.update(id, updateReviewRateDto);
         break;
       }
       case Rate.neutral: {
@@ -111,11 +124,12 @@ export class ReviewRateService {
         else {
           review_rate.review.pos_rate += 1;
         }
+
+        await this.reviewRatesRepository.remove(review_rate);
         break;
       }
     }
 
     await this.reviewsRepository.save(review_rate.review);
-    await this.reviewRatesRepository.update(id, updateReviewRateDto);
   }
 }

@@ -3,10 +3,7 @@ import { ApiBearerAuth, ApiHeader, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { ReviewsService } from "./reviews.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { AuthUser } from "../users/decorator/users.decorator";
-import { Roles } from "../auth/decorators/roles.decorator";
-import { roles } from "../users/entities/users.entity";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
-import { RolesGuard } from "../auth/guard/roles-auth.guard";
 import { UpdateReviewDto } from "./dto/update-review.dto";
 
 @ApiTags('Review')

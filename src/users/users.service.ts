@@ -14,7 +14,11 @@ export class UsersService {
   ) {}
 
   async findOne(id: number): Promise<any> {
-    const { password, ...result } = await this.usersRepository.findOne(id);
+    const user = await this.usersRepository.findOne(id);
+    if (user == null) {
+      throw new BadRequestException({message: "User does not exist"});
+    }
+    const { password, ...result } = user;
     return result;
   }
 
@@ -40,47 +44,31 @@ export class UsersService {
   }
 
   async deleteUser(user_id: number) {
-    try {
-      const user = await this.usersRepository.findOne(user_id);
-      if (user == null) {
-        throw new BadRequestException({message: 'user does not exist'});
-      }
-      await this.usersRepository.remove(user);
-    } catch (e) {
-      throw new HttpException({
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: e.toString(),
-      }, HttpStatus.INTERNAL_SERVER_ERROR)
+    const user = await this.usersRepository.findOne(user_id);
+    if (user == null) {
+      throw new BadRequestException({message: 'user does not exist'});
     }
+    await this.usersRepository.remove(user);
   }
 
   async updateUser(updateUserDto: UpdateUserDto, id: number) {
-    try {
-      const user = await this.usersRepository.findOne(id);
-      user.username = updateUserDto.username;
-      await this.usersRepository.save(user);
+    const user = await this.usersRepository.findOne(id);
+    if (user == null) {
+      throw new BadRequestException({ message: 'User does not exist' });
     }
-    catch (e) {
-      throw new HttpException({
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: e.toString(),
-      }, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    user.username = updateUserDto.username;
+    await this.usersRepository.save(user);
   }
 
   async updateUserRole(updateUserRoleDto: UpdateUserRoleDto) {
-    try {
-      const user = await this.usersRepository.findOne(updateUserRoleDto.id);
-      user.role = updateUserRoleDto.role;
-      await this.usersRepository.save(user);
+    const user = await this.usersRepository.findOne(updateUserRoleDto.id);
+    if (user == null) {
+      throw new BadRequestException({message: "User does not exist"})
     }
-    catch (e) {
-      throw new HttpException({
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: e.toString(),
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    if (Object.values(roles).includes(user.role)) {
+      throw new BadRequestException({message: "Wrong role"})
     }
+    user.role = updateUserRoleDto.role;
+    await this.usersRepository.save(user);
   }
 }

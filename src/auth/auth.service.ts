@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Users } from "../users/entities/users.entity";

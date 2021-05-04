@@ -7,8 +7,6 @@ import { Teachers } from './entities/teachers.entity';
 import { Repository } from 'typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
 
 @Injectable()
 export class TeachersService {
@@ -47,7 +45,7 @@ export class TeachersService {
   async deleteTeacher(teacher_id: number) {
     const teacher = await this.teachersRepository.findOne(teacher_id);
     if (teacher == null) {
-      throw new BadRequestException({ message: 'Teacher does not exist' });
+      throw new BadRequestException({ message: 'Teacher has not already exist' });
     }
     await this.teachersRepository.remove(teacher);
   }
