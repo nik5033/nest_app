@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Users } from "../../users/entities/users.entity";
 import { Reviews } from "../../reviews/entities/reviews.entity";
 
@@ -15,7 +15,7 @@ export class ReviewRates {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ enum: Rate })
+  @Column( { enum: Rate, type: "int"})
   rate: Rate;
 
   @ManyToOne(() => Users, (user) => user.review_rate)

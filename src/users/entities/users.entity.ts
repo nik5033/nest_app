@@ -16,10 +16,10 @@ export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 200, unique: true, })
+  @Column("varchar", { length: 200, unique: true, })
   username: string;
 
-  @Column()
+  @Column("varchar")
   password: string;
 
   @Column({ enum: roles, default: roles.USER })

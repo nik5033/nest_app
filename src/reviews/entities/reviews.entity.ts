@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { Users } from "../../users/entities/users.entity";
 import { Teachers } from "../../teachers/entities/teachers.entity";
-import { ReviewRates } from "../../review-rate/entities/review-rate.entity";
+import { Rate, ReviewRates } from "../../review-rate/entities/review-rate.entity";
 
 @Entity({
   name: 'reviews',
@@ -18,16 +18,10 @@ export class Reviews {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    type: "float"
-  })
+  @Column({ type: "int" })
   pos_rate: number;
 
-  @Column(
-    {
-      type: "float"
-    }
-  )
+  @Column({ type: "int" })
   neg_rate: number;
 
   @Column({ length: 400, type: 'varchar' })

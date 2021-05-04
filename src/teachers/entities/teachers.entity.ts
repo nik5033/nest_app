@@ -9,13 +9,13 @@ export class Teachers {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('varchar')
   name: string;
 
-  @Column()
+  @Column('varchar')
   surname: string;
 
-  @Column()
+  @Column('varchar')
   middlename: string;
 
   @Column('real')
