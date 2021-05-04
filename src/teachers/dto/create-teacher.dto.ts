@@ -13,15 +13,5 @@ export class CreateTeacherDto {
   @ApiProperty()
   middlename: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  character: number;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  quality: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  credits_exams: number;
 }

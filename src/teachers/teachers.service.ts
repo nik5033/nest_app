@@ -7,6 +7,8 @@ import { Teachers } from './entities/teachers.entity';
 import { Repository } from 'typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
 
 @Injectable()
 export class TeachersService {
@@ -31,7 +33,14 @@ export class TeachersService {
   }
 
   async createTeacher(createTeacherDto: CreateTeacherDto) {
-    const teacher = await this.teachersRepository.create(createTeacherDto);
+    const teacher = await this.teachersRepository.create({
+      name: createTeacherDto.name,
+      surname: createTeacherDto.surname,
+      middlename: createTeacherDto.middlename,
+      character: 0,
+      quality: 0,
+      credits_exams: 0,
+    });
     await this.teachersRepository.save(teacher);
   }
 
