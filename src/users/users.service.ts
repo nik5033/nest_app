@@ -27,26 +27,22 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto) {
-    try {
-      const salt = await genSalt();
-      createUserDto.password = await hash(createUserDto.password, salt);
-      const user = await this.usersRepository.create(createUserDto);
-      await this.usersRepository.save(user);
+    const exist_user = await this.usersRepository.findOne({
+      username: createUserDto.username,
+    });
+    if (exist_user != null) {
+      throw new BadRequestException({message: "User already exist"});
     }
-    catch(e) {
-      throw new HttpException({
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: e.toString(),
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const salt = await genSalt();
+    createUserDto.password = await hash(createUserDto.password, salt);
+    const user = await this.usersRepository.create(createUserDto);
+    await this.usersRepository.save(user);
   }
 
   async deleteUser(user_id: number) {
     const user = await this.usersRepository.findOne(user_id);
     if (user == null) {
-      throw new BadRequestException({message: 'user does not exist'});
+      throw new BadRequestException({message: 'User does not exist'});
     }
     await this.usersRepository.remove(user);
   }
