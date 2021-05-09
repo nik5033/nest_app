@@ -1,11 +1,12 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Res } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Users } from "../users/entities/users.entity";
 import { Repository } from "typeorm";
 import { LoginUserDto } from "./dto/login.dto";
-import { compare } from "bcrypt";
+import { compare, genSalt, hash } from "bcrypt";
 import { Response } from "express";
+import { RegisterUserDto } from "./dto/register.dto";
 
 @Injectable()
 export class AuthService {
@@ -39,12 +40,24 @@ export class AuthService {
 
     res.cookie('jwt', this.jwtService.sign(payload), { httpOnly: true} )
 
-    /*return {
-      token: this.jwtService.sign(payload),
-    };*/
   }
 
   logout(res: Response) {
     res.clearCookie('jwt');
+  }
+
+  async register(registerUserDto: RegisterUserDto, response: Response) {
+    const exist_user = await this.usersRepository.findOne({
+      username: registerUserDto.username,
+    });
+    if (exist_user != null) {
+      throw new BadRequestException({ message: "User already exist" });
+    }
+    const salt = await genSalt();
+    registerUserDto.password = await hash(registerUserDto.password, salt);
+    const user = await this.usersRepository.create(registerUserDto);
+    await this.usersRepository.save(user);
+
+    await this.login(registerUserDto, response);
   }
 }

@@ -34,10 +34,13 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'Create new user(registration)',
   })
+  @Roles(roles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('new')
   @UsePipes(new ValidationPipe())
   async newUser(@Body() createUserDto: CreateUserDto) {
