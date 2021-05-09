@@ -5,7 +5,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { RolesGuard } from "../auth/guard/roles-auth.guard";
-import { ApiBearerAuth, ApiHeader, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { roles } from "./entities/users.entity";
 import { AuthUser } from "./decorator/users.decorator";
 import { UpdateUserRoleDto } from "./dto/update-user-role.dto";

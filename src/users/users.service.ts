@@ -42,7 +42,7 @@ export class UsersService {
   async deleteUser(user_id: number) {
     const user = await this.usersRepository.findOne(user_id);
     if (user == null) {
-      throw new BadRequestException({message: 'User does not exist'});
+      throw new BadRequestException({ message: 'User does not exist' });
     }
     await this.usersRepository.remove(user);
   }

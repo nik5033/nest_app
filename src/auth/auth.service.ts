@@ -5,6 +5,7 @@ import { Users } from "../users/entities/users.entity";
 import { Repository } from "typeorm";
 import { LoginUserDto } from "./dto/login.dto";
 import { compare } from "bcrypt";
+import { Response } from "express";
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
     return null;
   }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto, res: Response) {
     const user = await this.usersRepository.create(loginUserDto);
     const usr = await this.usersRepository.findOne({ username: user.username });
     const payload = {
@@ -35,8 +36,15 @@ export class AuthService {
       username: user.username,
       id: usr.id,
     };
-    return {
+
+    res.cookie('jwt', this.jwtService.sign(payload), { httpOnly: true} )
+
+    /*return {
       token: this.jwtService.sign(payload),
-    };
+    };*/
+  }
+
+  logout(res: Response) {
+    res.clearCookie('jwt');
   }
 }
