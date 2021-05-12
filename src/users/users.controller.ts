@@ -16,12 +16,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @ApiResponse({
     status: 200,
     description: 'Get all users',
   })
   @Get()
-  async getAllUsers(){
+  async getAllUsers(@AuthUser() user: any){
     return this.usersService.findAll();
   }
 

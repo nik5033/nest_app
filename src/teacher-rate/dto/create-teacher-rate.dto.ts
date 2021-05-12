@@ -2,9 +2,7 @@ import { IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateTeacherRateDto {
-  @ApiProperty({
-    type: 'int',
-  })
+  @ApiProperty()
   @IsNotEmpty()
   teacher_id: number;
 

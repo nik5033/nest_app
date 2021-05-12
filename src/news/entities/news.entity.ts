@@ -1,6 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Users } from "../../users/entities/users.entity";
-import { Teachers } from "../../teachers/entities/teachers.entity";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, } from "typeorm";
 
 @Entity({
   name: 'news',

@@ -29,11 +29,11 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const authHeader: string = request.header('Authorization');
+    const authHeader: string = request.header('Cookie');
     if (!authHeader) {
       throw new UnauthorizedException();
     }
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split('=')[1];
     const user = this.jwtService.verify(token);
     return roles.includes(user.role);
   }
