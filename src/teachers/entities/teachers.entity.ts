@@ -27,6 +27,9 @@ export class Teachers {
   @Column('real')
   credits_exams: number;
 
+  @Column()
+  rate_count: number;
+
   @OneToMany(() => Reviews, (review) => review.teacher)
   reviews: Reviews[];
 

@@ -38,8 +38,9 @@ export class AuthService {
       id: usr.id,
     };
 
-    res.cookie('jwt', this.jwtService.sign(payload), { httpOnly: true} )
+    res.cookie('jwt', this.jwtService.sign(payload), { httpOnly: true} );
 
+    return { id: usr.id };
   }
 
   logout(res: Response) {

@@ -19,7 +19,6 @@ export class TeacherRateController {
   })
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UsePipes(new ValidationPipe())
   async newTeacher(@Body() createTeacherRateDto: CreateTeacherRateDto, @AuthUser() user) {
     await this.teacherRateService.createRate(createTeacherRateDto, user.id);
   }
@@ -40,7 +39,6 @@ export class TeacherRateController {
   })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  @UsePipes(new ValidationPipe())
   async updateRates(@Param('id') id: number, @AuthUser() user,@Body() updateTeacherRateDto: UpdateTeacherRateDto) {
     await this.teacherRateService.changeRate(updateTeacherRateDto, user.id, id);
   }

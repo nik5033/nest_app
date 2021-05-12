@@ -65,6 +65,7 @@ export class TeacherRateService {
     teacher.character += New_Rate.character;
     teacher.credits_exams += New_Rate.credits_exams;
     teacher.quality += New_Rate.quality;
+    teacher.rate_count += 1;
 
     await this.teachersRepository.save(teacher);
     await this.teacherRateRepository.save(New_Rate);

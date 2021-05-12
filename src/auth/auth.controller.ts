@@ -18,9 +18,8 @@ export class AuthController {
   })
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  @UsePipes(new ValidationPipe())
   async login(@Body() loginUserDto: LoginUserDto,@Res({passthrough: true}) response: Response) {
-    await this.authService.login(loginUserDto, response);
+    return await this.authService.login(loginUserDto, response);
   }
 
   @ApiResponse({

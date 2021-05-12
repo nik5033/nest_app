@@ -40,7 +40,7 @@ export class TeachersController {
   @Roles(roles.EDITOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
-  @UsePipes(new ValidationPipe())
+  //@UsePipes(new ValidationPipe())
   async newTeacher(@Body() createTeacherDto: CreateTeacherDto) {
     await this.teachersService.createTeacher(createTeacherDto);
   }
@@ -65,7 +65,7 @@ export class TeachersController {
   @Roles(roles.EDITOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('chg/:id')
-  @UsePipes(new ValidationPipe())
+  //@UsePipes(new ValidationPipe())
   async updateTeacher(@Param('id') id: number, @Body() updateTeacherDto: UpdateTeacherDto) {
     await this.teachersService.updateTeacher(updateTeacherDto, id);
   }

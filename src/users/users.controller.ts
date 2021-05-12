@@ -30,6 +30,7 @@ export class UsersController {
     status: 200,
     description: 'Get user by id',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUser(@Param('id') id: number) {
     return this.usersService.findOne(id);
@@ -43,7 +44,6 @@ export class UsersController {
   @Roles(roles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('new')
-  @UsePipes(new ValidationPipe())
   async newUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
@@ -79,7 +79,6 @@ export class UsersController {
   })
   @Roles(roles.USER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @UsePipes(new ValidationPipe())
   @Patch('chg/:id')
   async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     await this.usersService.updateUser(updateUserDto, id);
@@ -92,7 +91,6 @@ export class UsersController {
   })
   @Roles(roles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @UsePipes(new ValidationPipe())
   @Patch('chg')
   async updateUserRole(@Body() updateUserRoleDto: UpdateUserRoleDto) {
     await this.usersService.updateUserRole(updateUserRoleDto);

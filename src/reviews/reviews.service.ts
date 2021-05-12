@@ -37,10 +37,10 @@ export class ReviewsService {
     if (user == null) {
       throw new BadRequestException({message: "User does not exist"});
     }
-    const neg_rate = createReviewDto.neg_rate;
+
     const review = await this.reviewsRepository.create({
-      pos_rate: createReviewDto.pos_rate,
-      neg_rate: createReviewDto.neg_rate,
+      pos_rate: 0,
+      neg_rate: 0,
       text: createReviewDto.text,
       teacher: teacher,
       user: user,

@@ -38,6 +38,7 @@ export class TeachersService {
       character: 0,
       quality: 0,
       credits_exams: 0,
+      rate_count: 0,
     });
     await this.teachersRepository.save(teacher);
   }

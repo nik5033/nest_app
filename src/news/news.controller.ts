@@ -34,7 +34,6 @@ export class NewsController {
   @Roles(roles.EDITOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
-  @UsePipes(new ValidationPipe())
   async newTeacher(@Body() createNewsDto: CreateNewsDto) {
     await this.newsService.createNews(createNewsDto);
   }
@@ -59,7 +58,6 @@ export class NewsController {
   @Roles(roles.EDITOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('chg/:id')
-  @UsePipes(new ValidationPipe())
   async updateTeacher(@Param('id') id: number, @Body() updateNewsDto: UpdateNewsDto) {
     await this.newsService.updateNews(updateNewsDto, id);
   }
