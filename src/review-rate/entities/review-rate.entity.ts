@@ -18,9 +18,13 @@ export class ReviewRates {
   @Column( { enum: Rate, type: "int"})
   rate: Rate;
 
-  @ManyToOne(() => Users, (user) => user.review_rate)
+  @ManyToOne(() => Users, (user) => user.review_rate, {
+    onDelete: 'CASCADE',
+  })
   user: Users;
 
-  @ManyToOne(() => Reviews, (review) => review.review_rates)
+  @ManyToOne(() => Reviews, (review) => review.review_rates, {
+    onDelete: 'CASCADE',
+  })
   review: Reviews;
 }

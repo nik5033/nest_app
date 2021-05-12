@@ -18,9 +18,13 @@ export class TeacherRates {
   @Column('real')
   credits_exams: number;
 
-  @ManyToOne(() => Users, (user) => user.teacher_rates)
+  @ManyToOne(() => Users, (user) => user.teacher_rates, {
+    onDelete: 'CASCADE',
+  })
   user: Users;
 
-  @ManyToOne(() => Teachers, (teacher) => teacher.teacher_rates)
+  @ManyToOne(() => Teachers, (teacher) => teacher.teacher_rates, {
+    onDelete: 'CASCADE',
+  })
   teacher: Teachers;
 }

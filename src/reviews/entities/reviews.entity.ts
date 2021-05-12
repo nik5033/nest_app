@@ -33,10 +33,14 @@ export class Reviews {
   @UpdateDateColumn()
   updatedDate: Date;
 
-  @ManyToOne(() => Users, (user) => user.reviews)
+  @ManyToOne(() => Users, (user) => user.reviews, {
+    onDelete: 'CASCADE',
+  })
   user: Users;
 
-  @ManyToOne(() => Teachers, (teacher) => teacher.reviews)
+  @ManyToOne(() => Teachers, (teacher) => teacher.reviews, {
+    onDelete: 'CASCADE',
+  })
   teacher: Teachers;
 
   @OneToMany(() => ReviewRates, (review_rate) => review_rate.review)
