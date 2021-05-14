@@ -1,9 +1,5 @@
-FROM node:latest
+FROM node:15.3.0-alpine3.12
+
+RUN apk add --update make g++
 
 WORKDIR /app
-
-ADD package.json /app/package.json
-
-RUN yarn add
-
-ADD . /app

@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.3'
 
 services:
 
@@ -8,28 +8,55 @@ services:
     image: postgres
     ports:
       - "127.0.0.1:5432:5432"
+    networks:
+      sample:
+        aliases:
+          - postgresql
     env_file:
       - .env
     volumes:
       - ./docker-data/postgres/data:/var/lib/postgresql/data
     environment:
       PGDATA: /var/lib/postgresql/data/
+    restart: always
 
   nodejs:
     container_name: nodejs
     build: ./docker/node
-    image: node:latest
+    image: nodejs
     volumes:
       - .:/app
     ports:
+      - 8060:3000
       - 5555:5555
+    networks:
+      sample:
+        aliases:
+          - backend-nest
     env_file:
       - .env
     depends_on:
       - postgres
-    command: yarn dev
+    command: yarn prod
+    restart: always
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - nodejs
+      - postgres
+    networks:
+      sample:
+        aliases:
+          - nginx
+    restart: always
 
 networks:
-  default:
+  sample:
     external:
       name: sample
