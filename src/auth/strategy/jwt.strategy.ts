@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 
 const cookieExtractor = function(request) {
   let token = null;
-  if (request) {
+  if (request && request['headers']['cookie']) {
     token = request['headers']['cookie'].split('=')[1];
   }
   return token;
