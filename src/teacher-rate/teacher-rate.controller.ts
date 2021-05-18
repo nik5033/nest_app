@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
 import { TeacherRateService } from "./teacher-rate.service";
@@ -41,5 +41,15 @@ export class TeacherRateController {
   @Patch(':id')
   async updateRates(@Param('id') id: number, @AuthUser() user,@Body() updateTeacherRateDto: UpdateTeacherRateDto) {
     await this.teacherRateService.changeRate(updateTeacherRateDto, user.id, id);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Change rates by id',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+    async deleteRate(@Param('id') id: number, @AuthUser() user) {
+    await this.teacherRateService.deleteRate(user.id, id);
   }
 }

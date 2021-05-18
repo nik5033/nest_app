@@ -89,4 +89,24 @@ export class TeacherRateService {
     await this.teachersRepository.save(Rate.teacher);
     await this.teacherRateRepository.update(id, updateTeacherRateDto);
   }
+
+  async deleteRate(user_id: number, id: number) {
+    const Rate = await this.teacherRateRepository.findOne(
+      id, {relations: ['user', 'teacher']},
+    );
+    if (Rate == null) {
+      throw new BadRequestException({ message: 'Rate does not exist' });
+    }
+    if (Rate.user.id != user_id) {
+      throw new ForbiddenException();
+    }
+
+    Rate.teacher.character -= Rate.character;
+    Rate.teacher.credits_exams -= Rate.credits_exams;
+    Rate.teacher.quality -= Rate.quality;
+    Rate.teacher.rate_count -= 1;
+
+    await this.teachersRepository.save(Rate.teacher);
+    await this.teacherRateRepository.remove(Rate);
+  }
 }

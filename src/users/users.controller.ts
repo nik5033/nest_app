@@ -21,6 +21,8 @@ export class UsersController {
     status: 200,
     description: 'Get all users',
   })
+  @Roles(roles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   async getAllUsers(@AuthUser() user: any){
     return this.usersService.findAll();

@@ -59,6 +59,6 @@ export class AuthService {
     const user = await this.usersRepository.create(registerUserDto);
     await this.usersRepository.save(user);
 
-    await this.login(registerUserDto, response);
+    return await this.login(registerUserDto, response);
   }
 }
