@@ -3,11 +3,16 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 
 const cookieExtractor = function(request) {
-  let token = null;
-  if (request && request['headers']['cookie']) {
-    token = request['headers']['cookie'].split('=')[1];
+  if (process.env.header == 'Cookie') {
+    let token = null;
+    if (request && request['headers']['cookie']) {
+      token = request['headers']['cookie'].split('=')[1];
+    }
+    return token;
   }
-  return token;
+  else if (process.env.header == 'Authorization'){
+    return ExtractJwt.fromAuthHeader();
+  }
 };
 
 @Injectable()

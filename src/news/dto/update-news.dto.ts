@@ -1,16 +1,14 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, MaxLength } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateNewsDto {
-  @ApiProperty({
-    maxLength: 100,
-  })
+  @ApiProperty()
   @IsNotEmpty()
+  @MaxLength(100)
   title: string;
 
-  @ApiProperty({
-    maxLength: 400,
-  })
+  @ApiProperty()
   @IsNotEmpty()
+  @MaxLength(400)
   text: string;
 }

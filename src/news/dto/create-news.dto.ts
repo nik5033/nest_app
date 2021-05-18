@@ -9,9 +9,7 @@ export class CreateNewsDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({
-    maxLength: 400,
-  })
+  @ApiProperty()
   @IsNotEmpty()
   @MaxLength(400)
   text: string;
