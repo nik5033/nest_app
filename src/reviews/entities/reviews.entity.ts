@@ -18,10 +18,10 @@ export class Reviews {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "int" })
+  @Column()
   pos_rate: number;
 
-  @Column({ type: "int" })
+  @Column()
   neg_rate: number;
 
   @Column({ length: 400, type: 'varchar' })

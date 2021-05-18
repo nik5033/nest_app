@@ -5,7 +5,6 @@ import { Reviews } from "../../reviews/entities/reviews.entity";
 export enum Rate {
   negative = -1,
   positive = 1,
-  neutral = 0,
 }
 
 @Entity({

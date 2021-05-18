@@ -61,9 +61,9 @@ export class UsersService {
     if (user == null) {
       throw new BadRequestException({message: "User does not exist"})
     }
-    if (Object.values(roles).includes(user.role)) {
+    /*if (Object.values(roles).includes(user.role)) {
       throw new BadRequestException({message: "Wrong role"})
-    }
+    }*/
     user.role = updateUserRoleDto.role;
     await this.usersRepository.save(user);
   }

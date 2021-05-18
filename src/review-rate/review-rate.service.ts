@@ -117,19 +117,35 @@ export class ReviewRateService {
         await this.reviewRatesRepository.update(id, updateReviewRateDto);
         break;
       }
-      case Rate.neutral: {
-        if (review_rate.rate == Rate.positive) {
-          review_rate.review.pos_rate -= 1;
-        }
-        else {
-          review_rate.review.pos_rate += 1;
-        }
-
-        await this.reviewRatesRepository.remove(review_rate);
-        break;
+      default: {
+        throw new BadRequestException('Wrong value');
       }
     }
 
+    await this.reviewsRepository.save(review_rate.review);
+  }
+
+  async deleteRate(user_id: number, id: number) {
+    const review_rate = await this.reviewRatesRepository.findOne(
+      id,
+      {relations: ['user', 'review']},
+    );
+
+    if (review_rate == null) {
+      throw new BadRequestException({ message: 'Review rate does not exist' });
+    }
+    if (review_rate.user.id != user_id) {
+      throw new ForbiddenException();
+    }
+
+    if (review_rate.rate == Rate.positive) {
+      review_rate.review.pos_rate -= 1;
+    }
+    else {
+      review_rate.review.pos_rate += 1;
+    }
+
+    await this.reviewRatesRepository.remove(review_rate);
     await this.reviewsRepository.save(review_rate.review);
   }
 }

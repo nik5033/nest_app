@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ReviewRateService } from "./review-rate.service";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../auth/guard/jwt-auth.guard";
@@ -41,5 +41,15 @@ export class ReviewRateController {
   @Patch(':id')
   async updateRates(@Param('id') id: number, @AuthUser() user,@Body() updateReviewRateDto: UpdateReviewRateDto) {
     await this.reviewRateService.changeRate(updateReviewRateDto, user.id, id);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Change rates by id',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteRate(@Param('id') id: number, @AuthUser() user) {
+    await this.reviewRateService.deleteRate(user.id, id);
   }
 }

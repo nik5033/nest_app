@@ -1,14 +1,15 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEnum, IsInt, IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { Rate } from "../entities/review-rate.entity";
 
 export class CreateReviewRateDto {
-  @ApiProperty({
-    type: 'int',
-  })
+  @ApiProperty()
   @IsNotEmpty()
+  @IsInt()
   review_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
-  rate: number;
+  @IsEnum(Rate)
+  rate: Rate;
 }
