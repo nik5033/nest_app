@@ -33,7 +33,7 @@ export class RolesGuard implements CanActivate {
     if (!authHeader) {
       throw new UnauthorizedException();
     }
-    const token = authHeader.split(process.env.separator)[1];
+    const token = authHeader.split('=')[1];
     const user = this.jwtService.verify(token);
     return roles.includes(user.role);
   }
